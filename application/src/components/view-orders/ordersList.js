@@ -1,4 +1,5 @@
 import React from 'react';
+import { dateService } from '../../services/date.service';
 
 const OrdersList = (props) => {
     const { orders } = props;
@@ -7,6 +8,10 @@ const OrdersList = (props) => {
             <h2>There are no orders to display</h2>
         </div>
     );
+
+    function formatDateTime(dateTime) {
+        return dateService.convertDateTimeToTwelveHour(dateTime);
+    }
 
     return orders.map(order => {
         const createdDate = new Date(order.createdAt);
@@ -17,7 +22,7 @@ const OrdersList = (props) => {
                     <p>Ordered by: {order.ordered_by || ''}</p>
                 </div>
                 <div className="col-md-4 d-flex view-order-middle-col">
-                    <p>Order placed at {`${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`}</p>
+                    <p>Order placed at {`${formatDateTime(createdDate)}`}</p>
                     <p>Quantity: {order.quantity}</p>
                 </div>
                 <div className="col-md-4 view-order-right-col">
