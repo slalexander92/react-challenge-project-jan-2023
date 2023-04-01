@@ -55,4 +55,20 @@ describe('Orders List', () => {
         expect(screen.getByText(/^.*888.*$/gm)).toBeInTheDocument();
 
     });
+
+    test('renders orders with correctly formatted times', () => {
+        const hoursMinutesSecondsRegex = /((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d)/g;
+        const createdAt = 'Sat Apr 01 2023 11:44:07 GMT-0700 (Pacific Daylight Time)';
+
+        const orders = [{
+            _id: 1,
+            order_item: "Food",
+            quantity: "777",
+            createdAt,
+        }];
+
+        render(<OrdersList orders={orders} />)
+
+        expect(screen.getByText(hoursMinutesSecondsRegex)).toBeInTheDocument();
+    });
 })
