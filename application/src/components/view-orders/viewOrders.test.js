@@ -1,16 +1,20 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
+import store from '../../redux/store';
 
 import ViewOrders from './viewOrders';
 
 describe('View Orders', () => {
     test('view orders renders', () => {
-        render(
-            <MemoryRouter>
-                <ViewOrders />
-            </MemoryRouter>
+        render (
+            <Provider store={store}>
+                <BrowserRouter>
+                    <ViewOrders />
+                </BrowserRouter>
+            </Provider>
         )
-
     });
 })

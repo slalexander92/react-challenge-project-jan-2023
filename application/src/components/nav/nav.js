@@ -1,8 +1,8 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { logoutUser } from '../../redux/actions/authActions'
-import "./nav.css";
+import './nav.css';
 
 const mapActionsToProps = dispatch => ({
     commenceLogout() {
@@ -11,13 +11,13 @@ const mapActionsToProps = dispatch => ({
 });
 
 const Nav = (props) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function logout(event) {
         event.preventDefault();
 
         props.commenceLogout();
-        history.push('/login');
+        navigate('/login');
     }
 
     return (
