@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import LoginForm from './login-form/loginForm';
+import { useNavigate } from 'react-router-dom';
 import './login.css';
 
 const mapStateToProps = state => ({
@@ -8,8 +9,10 @@ const mapStateToProps = state => ({
 });
 
 const Login = (props) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (props.auth.token) props.history.push('/view-orders');
+    if (props.auth.token) navigate('/view-orders');
 
   }, [props.auth.token]);
 
