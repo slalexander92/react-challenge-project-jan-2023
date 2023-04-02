@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Main, Login, OrderForm, ViewOrders} from '../components';
+import { Main, Login, Order, ViewOrders } from '../components';
 import { ProtectedRoute } from './protectedRoute';
 
 const AppRouter = (props) => {
@@ -11,7 +11,7 @@ const AppRouter = (props) => {
         <Route path="/login" exact element={<Login />} />
         <Route path="/order" element={
           <ProtectedRoute>
-            <OrderForm />
+            <Order />
           </ProtectedRoute>
         } />
         <Route path="/view-orders" element={
