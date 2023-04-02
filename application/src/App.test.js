@@ -1,9 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
+import { act } from '@testing-library/react';
 import App from './App';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+describe('App', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    const root = ReactDOMClient.createRoot(div);
+
+    act(() => {
+      root.render(<App />);
+      root.unmount();
+    });
+  });
+})
