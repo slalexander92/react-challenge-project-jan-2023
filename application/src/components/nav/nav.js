@@ -1,8 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { connect } from 'react-redux';
+import { logoutUser } from '../../redux/actions/authActions'
 import "./nav.css";
 
+const mapActionsToProps = dispatch => ({
+    commenceLogout() {
+        dispatch(logoutUser());
+    }
+});
+
 const Nav = (props) => {
+    const history = useHistory();
+
+    function logout(event) {
+        event.preventDefault();
+
+        props.commenceLogout();
+        history.push('/login');
+    }
+
     return (
         <div className="nav-strip">
             <Link to={"/order"} className="nav-link">
