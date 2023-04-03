@@ -1,26 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { OrderForm, Template } from '../../components';
-import { useSelector } from 'react-redux';
 import { SERVER_IP } from '../../private';
 import OrdersList from './ordersList';
 import './viewOrders.css';
 import Modal from '../modal/modal';
 
-const EDIT_ORDER_URL = `${SERVER_IP}/api/edit-order`;
-const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
+import usePlaceOrder from '../../hooks/usePlaceOrder';
 
 export default function ViewOrders(props) {
     const [orders, setOrders] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingOrder, setEditingOrder] = useState(null);
 
-    const [orderItem, setOrderItem] = useState('');
-    const [quantity, setQuantity] = useState('1');
+    const {
+        menuItemChosen,
+        menuQuantityChosen,
 
-    const auth = useSelector((state) => state.auth);
+        editingOrder,
+        setEditingOrder,
 
-    const menuItemChosen = ({ target }) => setOrderItem(target.value);
-    const menuQuantityChosen = ({ target }) => setQuantity(target.value);
+        orderItem,
+        setOrderItem,
+
+        quantity,
+        setQuantity,
+
+        deleteOrder,
+        submitEditOrder,
+    } = usePlaceOrder();
+
+
 
     useEffect(() => {
         fetch(`${SERVER_IP}/api/current-orders`)
@@ -49,37 +57,6 @@ export default function ViewOrders(props) {
             setQuantity('1');
         }
     }, [isModalOpen])
-
-    const submitEditOrder = () => {
-        fetch(EDIT_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: editingOrder._id,
-                order_item: orderItem,
-                quantity,
-                ordered_by: auth.email || 'Unknown!',
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(response => console.log("Success", JSON.stringify(response)))
-        .catch(error => console.error(error));
-    }
-
-    const deleteOrder = order => {
-        fetch(DELETE_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({ id: order._id }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(response => console.log("Success", JSON.stringify(response)))
-        .catch(error => console.error(error));
-    }
 
     function setupOrderEdit(order) {
         if (!order || !order._id) return setEditingOrder(null);
