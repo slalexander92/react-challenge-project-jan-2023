@@ -28,8 +28,6 @@ export default function ViewOrders(props) {
         submitEditOrder,
     } = usePlaceOrder();
 
-
-
     useEffect(() => {
         fetch(`${SERVER_IP}/api/current-orders`)
             .then(response => response.json())
