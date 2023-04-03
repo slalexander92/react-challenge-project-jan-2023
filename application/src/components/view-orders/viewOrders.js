@@ -64,7 +64,7 @@ export default function ViewOrders(props) {
         return setEditingOrder(order);
     }
 
-    function toggleModal(order) {
+    function toggleModal(order = null) {
         setupOrderEdit(order);
 
         setIsModalOpen(!isModalOpen);
