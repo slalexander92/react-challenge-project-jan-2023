@@ -27,7 +27,6 @@ export default function OrderForm(props) {
         });
     }
 
-
     return (
         <form>
             <label className="form-label">I'd like to order...</label>
@@ -46,6 +45,7 @@ export default function OrderForm(props) {
             <select value={props.quantity} onChange={(event) => props.menuQuantityChosen(event)}>
                 {<QuantityOptions />}
             </select>
+
             <button type="button" className="order-btn" onClick={() => props.submitOrder()}>Order It!</button>
         </form>
     )
