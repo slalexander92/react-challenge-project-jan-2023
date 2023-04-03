@@ -19,6 +19,14 @@ export default function OrderForm(props) {
         return ([defaultOption, ...foodOptions]);
     }
 
+    const QuantityOptions = () => {
+        const numberArray = Array.from(Array(6)).map((_, index) => index + 1);
+
+        return numberArray.map(number => {
+            return (<option value={number} key={`quantity-option-${number}`}>{number}</option>);
+        });
+    }
+
 
     return (
         <form>
@@ -36,12 +44,7 @@ export default function OrderForm(props) {
 
             <label className="qty-label">Qty:</label>
             <select value={props.quantity} onChange={(event) => props.menuQuantityChosen(event)}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                {<QuantityOptions />}
             </select>
             <button type="button" className="order-btn" onClick={() => props.submitOrder()}>Order It!</button>
         </form>
