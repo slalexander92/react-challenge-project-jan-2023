@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Template } from '../../components';
+import { OrderForm, Template } from '../../components';
 import { SERVER_IP } from '../../private';
 import OrdersList from './ordersList';
 import './viewOrders.css';
+import Modal from '../modal/modal';
 
 export default function ViewOrders(props) {
     const [orders, setOrders] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
     useEffect(() => {
         fetch(`${SERVER_IP}/api/current-orders`)
@@ -19,6 +21,10 @@ export default function ViewOrders(props) {
             });
     }, [])
 
+    function toggleModal() {
+        setIsModalOpen(!isModalOpen);
+    }
+
     return (
         <Template>
             <div className="container-fluid">
@@ -26,6 +32,10 @@ export default function ViewOrders(props) {
                     orders={orders}
                 />
             </div>
+
+            <Modal isModalOpen={isModalOpen} closeModal={() => toggleModal()}>
+                <OrderForm />
+            </Modal>
         </Template>
     );
 }
