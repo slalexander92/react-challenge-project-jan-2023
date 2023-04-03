@@ -30,6 +30,7 @@ export default function ViewOrders(props) {
             <div className="container-fluid">
                 <OrdersList
                     orders={orders}
+                    openModal={() => toggleModal()}
                 />
             </div>
 
