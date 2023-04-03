@@ -7,6 +7,7 @@ import './viewOrders.css';
 import Modal from '../modal/modal';
 
 const EDIT_ORDER_URL = `${SERVER_IP}/api/edit-order`;
+const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
 
 export default function ViewOrders(props) {
     const [orders, setOrders] = useState([]);
@@ -67,6 +68,19 @@ export default function ViewOrders(props) {
         .catch(error => console.error(error));
     }
 
+    const deleteOrder = order => {
+        fetch(DELETE_ORDER_URL, {
+            method: 'POST',
+            body: JSON.stringify({ id: order._id }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => console.log("Success", JSON.stringify(response)))
+        .catch(error => console.error(error));
+    }
+
     function setupOrderEdit(order) {
         if (!order || !order._id) return setEditingOrder(null);
 
@@ -85,6 +99,7 @@ export default function ViewOrders(props) {
                 <OrdersList
                     orders={orders}
                     openEditModal={order => toggleModal(order)}
+                    deleteOrder={order => deleteOrder(order)}
                 />
             </div>
 
