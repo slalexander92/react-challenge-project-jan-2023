@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { OrderForm, Template } from '../../components';
 import { SERVER_IP } from '../../private';
 import OrdersList from './ordersList';
@@ -7,9 +8,13 @@ import Modal from '../modal/modal';
 
 import usePlaceOrder from '../../hooks/usePlaceOrder';
 
+const EDIT_ORDER_URL = `${SERVER_IP}/api/edit-order`;
+const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
+
 export default function ViewOrders(props) {
     const [orders, setOrders] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const auth = useSelector((state) => state.auth);
 
     const {
         menuItemChosen,
@@ -23,9 +28,6 @@ export default function ViewOrders(props) {
 
         quantity,
         setQuantity,
-
-        deleteOrder,
-        submitEditOrder,
     } = usePlaceOrder();
 
     useEffect(() => {
@@ -66,6 +68,37 @@ export default function ViewOrders(props) {
         setupOrderEdit(order);
 
         setIsModalOpen(!isModalOpen);
+    }
+
+    const submitEditOrder = () => {
+        fetch(EDIT_ORDER_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                id: editingOrder._id,
+                order_item: orderItem,
+                quantity,
+                ordered_by: auth.email || 'Unknown!',
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => console.log("Success", JSON.stringify(response)))
+        .catch(error => console.error(error));
+    }
+
+    const deleteOrder = order => {
+        fetch(DELETE_ORDER_URL, {
+            method: 'POST',
+            body: JSON.stringify({ id: order._id }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => console.log("Success", JSON.stringify(response)))
+        .catch(error => console.error(error));
     }
 
     return (
