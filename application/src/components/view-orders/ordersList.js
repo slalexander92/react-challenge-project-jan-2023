@@ -2,7 +2,8 @@ import React from 'react';
 import { dateService } from '../../services/date.service';
 
 const OrdersList = (props) => {
-    const { orders } = props;
+    const { orders, openEditModal, deleteOrder } = props;
+
     if (!props || !props.orders || !props.orders.length) return (
         <div className="empty-orders">
             <h2>There are no orders to display</h2>
@@ -26,8 +27,8 @@ const OrdersList = (props) => {
                     <p>Quantity: {order.quantity}</p>
                 </div>
                 <div className="col-md-4 view-order-right-col">
-                    <button className="btn btn-success">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-success" onClick={() => openEditModal(order)}>Edit</button>
+                    <button className="btn btn-danger" onClick={() => deleteOrder(order)}>Delete</button>
                 </div>
             </div>
         );
