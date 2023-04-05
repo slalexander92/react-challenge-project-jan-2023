@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { requestHandler } from '../../services/request-handler.service';
+
 import { OrderForm, Template } from '../../components';
-import { SERVER_IP } from '../../private';
 import OrdersList from './ordersList';
 import './viewOrders.css';
 import Modal from '../modal/modal';
 
 import usePlaceOrder from '../../hooks/usePlaceOrder';
-
-const EDIT_ORDER_URL = `${SERVER_IP}/api/edit-order`;
-const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
 
 export default function ViewOrders(props) {
     const [orders, setOrders] = useState([]);
@@ -31,14 +29,15 @@ export default function ViewOrders(props) {
     } = usePlaceOrder();
 
     useEffect(() => {
-        fetch(`${SERVER_IP}/api/current-orders`)
-            .then(response => response.json())
-            .then(response => {
-                if(response.success) {
-                    setOrders(response.orders);
-                } else {
+        requestHandler.makeRequest('GET', 'current-orders')
+            .then(({ success, orders }) => {
+                if (!success) {
                     console.log('Error getting orders');
+
+                    return;
                 }
+
+                setOrders(orders);
             });
     }, [])
 
@@ -71,34 +70,20 @@ export default function ViewOrders(props) {
     }
 
     const submitEditOrder = () => {
-        fetch(EDIT_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: editingOrder._id,
-                order_item: orderItem,
-                quantity,
-                ordered_by: auth.email || 'Unknown!',
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        requestHandler.makeRequest('POST', 'edit-order', {
+            id: editingOrder._id,
+            order_item: orderItem,
+            quantity,
+            ordered_by: auth.email || 'Unknown!',
         })
-        .then(res => res.json())
         .then(response => console.log("Success", JSON.stringify(response)))
         .catch(error => console.error(error));
     }
 
     const deleteOrder = order => {
-        fetch(DELETE_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({ id: order._id }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(response => console.log("Success", JSON.stringify(response)))
-        .catch(error => console.error(error));
+        requestHandler.makeRequest('POST', 'delete-order', { id: order._id })
+            .then(response => console.log("Success", JSON.stringify(response)))
+            .catch(error => console.error(error));
     }
 
     return (
