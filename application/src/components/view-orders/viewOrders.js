@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 import { requestHandler } from '../../services/request-handler.service';
+import { getOrders } from '../../redux/actions/orderActions'
 
 import { OrderForm, Template } from '../../components';
 import OrdersList from './ordersList';
@@ -9,10 +10,16 @@ import Modal from '../modal/modal';
 
 import usePlaceOrder from '../../hooks/usePlaceOrder';
 
-export default function ViewOrders(props) {
-    const [orders, setOrders] = useState([]);
+const mapActionsToProps = dispatch => ({
+    triggerGetOrders() {
+        dispatch(getOrders());
+    }
+});
+
+function ViewOrders(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const auth = useSelector((state) => state.auth);
+    const orders = useSelector(({ orders }) => orders.orderList);
 
     const {
         menuItemChosen,
@@ -29,16 +36,7 @@ export default function ViewOrders(props) {
     } = usePlaceOrder();
 
     useEffect(() => {
-        requestHandler.makeRequest('GET', 'current-orders')
-            .then(({ success, orders }) => {
-                if (!success) {
-                    console.log('Error getting orders');
-
-                    return;
-                }
-
-                setOrders(orders);
-            });
+        props.triggerGetOrders();
     }, [])
 
     useEffect(() => {
@@ -108,3 +106,5 @@ export default function ViewOrders(props) {
         </Template>
     );
 }
+
+export default connect(null, mapActionsToProps)(ViewOrders);
