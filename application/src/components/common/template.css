@@ -11,6 +11,17 @@
     margin-right: 20%;
 }
 
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+}
+
+.email {
+    color: blue;
+}
+
 .logo {
     display: block;
     font-family: "Optima";
