@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from '../actions/types'
+import { LOGIN, LOGIN_ERROR, LOGOUT } from '../actions/types'
 
 const INITIAL_STATE = { email: null, token: null };
 
@@ -8,6 +8,9 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, email: action.payload.email, token: action.payload.token }
         case LOGOUT:
             return { ...state, ...INITIAL_STATE }
+        case LOGIN_ERROR:
+            console.log(action)
+            return { ...state, errorMessage: action.payload.errorMessage }
         default:
             return state;
     }
