@@ -1,5 +1,7 @@
 const express = require('express');
 const userService = require('../services/user.service');
+const passwordService = require('../services/password.service');
+const User = require('../models/user.model');
 
 const router = express.Router();
 
@@ -8,12 +10,30 @@ const router = express.Router();
 router.post('/login', (req, res) => {
   try {
     if (!req.body || !req.body.email || !req.body.password) {
-      res.status(401).json({ success: false, error: 'Bad login information' });
+      res.status(401).json({ success: false, error: 'Bad login information, try again' });
       return;
     }
-    res.status(200).json({ success: true, email: req.body.email, token: '12345luggage' });
+
+    const { email, password } = req.body;
+
+    return User.findOne({ email })
+      .then(user => {
+        const storedPasswordHash = user && user.password;
+        const isPasswordMatch = passwordService.compareToHash(password, storedPasswordHash);
+
+        if (!user || !isPasswordMatch) return Promise.reject();
+
+        res.status(200).json({
+          success: true,
+          email: req.body.email,
+          token: '12345luggage'
+        });
+      })
+      .catch(() => {
+        res.status(401).json({ success: false, error: 'Bad login information, try again' });
+      });
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Unknown error' });
+    res.status(500).json({ success: false, error: 'Unknown error, try again' });
   }
 })
 
