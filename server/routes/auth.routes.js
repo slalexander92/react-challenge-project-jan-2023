@@ -1,4 +1,5 @@
 const express = require('express');
+const userService = require('../services/user.service');
 
 const router = express.Router();
 
@@ -15,5 +16,22 @@ router.post('/login', (req, res) => {
     res.status(500).json({ success: false, error: 'Unknown error' });
   }
 })
+
+router.post('/sign-up', (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!req.body || !req.body.email || !req.body.password) {
+      res.status(401).json({ success: false, error: 'Bad register information' });
+      return;
+    }
+
+    return userService.create(email, password)
+      .then(data => res.status(200).json({ success: true, data }));
+
+  } catch(error) {
+    res.status(500).json({ success: false, error });
+  }
+});
 
 module.exports = router;
