@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
+import { ordersService } from '../../services/orders.service';
+import { getOrders } from '../../redux/actions/orderActions'
+
 import { OrderForm, Template } from '../../components';
-import { SERVER_IP } from '../../private';
 import OrdersList from './ordersList';
 import './viewOrders.css';
 import Modal from '../modal/modal';
 
 import usePlaceOrder from '../../hooks/usePlaceOrder';
 
-const EDIT_ORDER_URL = `${SERVER_IP}/api/edit-order`;
-const DELETE_ORDER_URL = `${SERVER_IP}/api/delete-order`;
+const mapActionsToProps = dispatch => ({
+    triggerGetOrders() {
+        dispatch(getOrders());
+    }
+});
 
-export default function ViewOrders(props) {
-    const [orders, setOrders] = useState([]);
+function ViewOrders(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const auth = useSelector((state) => state.auth);
+    const orders = useSelector(({ orders }) => orders.orderList);
 
     const {
         menuItemChosen,
@@ -31,15 +36,7 @@ export default function ViewOrders(props) {
     } = usePlaceOrder();
 
     useEffect(() => {
-        fetch(`${SERVER_IP}/api/current-orders`)
-            .then(response => response.json())
-            .then(response => {
-                if(response.success) {
-                    setOrders(response.orders);
-                } else {
-                    console.log('Error getting orders');
-                }
-            });
+        props.triggerGetOrders();
     }, [])
 
     useEffect(() => {
@@ -71,34 +68,24 @@ export default function ViewOrders(props) {
     }
 
     const submitEditOrder = () => {
-        fetch(EDIT_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: editingOrder._id,
-                order_item: orderItem,
-                quantity,
-                ordered_by: auth.email || 'Unknown!',
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        ordersService.editOrder(editingOrder._id, {
+            orderItem,
+            quantity,
+            orderedBy: auth && auth.email,
         })
-        .then(res => res.json())
-        .then(response => console.log("Success", JSON.stringify(response)))
+        .then(() => {
+            props.triggerGetOrders();
+            toggleModal();
+        })
         .catch(error => console.error(error));
     }
 
     const deleteOrder = order => {
-        fetch(DELETE_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({ id: order._id }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(response => console.log("Success", JSON.stringify(response)))
-        .catch(error => console.error(error));
+        ordersService.deleteOrder(order._id)
+            .then(() => {
+                props.triggerGetOrders();
+            })
+            .catch(error => console.error(error));
     }
 
     return (
@@ -123,3 +110,5 @@ export default function ViewOrders(props) {
         </Template>
     );
 }
+
+export default connect(null, mapActionsToProps)(ViewOrders);
