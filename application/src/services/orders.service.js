@@ -39,14 +39,11 @@ function createOrder(body = {}) {
   });
 }
 
-function editOrder(body = {}) {
-  const { id, orderItem, quantity, orderedBy } = body;
-
-  console.log( 'edit' );
-  console.log( body );
+function editOrder(orderId, body = {}) {
+  const { orderItem, quantity, orderedBy } = body;
 
   return requestHandler.makeRequest('POST', 'edit-order', {
-    id,
+    id: orderId,
     order_item: orderItem,
     quantity,
     ordered_by: orderedBy || 'Unknown!',

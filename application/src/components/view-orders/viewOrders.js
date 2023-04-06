@@ -68,8 +68,7 @@ function ViewOrders(props) {
     }
 
     const submitEditOrder = () => {
-        ordersService.editOrder({
-            id: editingOrder._id,
+        ordersService.editOrder(editingOrder._id, {
             orderItem,
             quantity,
             orderedBy: auth && auth.email,
