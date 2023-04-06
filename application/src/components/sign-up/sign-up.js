@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { authService } from '../../services/auth.service';
 import './sign-up.css';
 
 export default function SignUp(props) {
@@ -13,6 +14,17 @@ export default function SignUp(props) {
 
   function signUp(e) {
     e.preventDefault();
+    validateEmail(data.email);
+
+    if (error) return;
+
+    return authService.register(data.email, data.password)
+      .then(result => {
+        console.log('auth result', result)
+
+        return result;
+      })
+      .catch(error => console.error(error));
   }
 
   function onChange(key, val) {
