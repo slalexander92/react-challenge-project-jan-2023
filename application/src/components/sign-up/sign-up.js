@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { authService } from '../../services/auth.service';
+import { useNavigate } from 'react-router-dom';
 import './sign-up.css';
 
 export default function SignUp(props) {
@@ -10,6 +11,8 @@ export default function SignUp(props) {
   });
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
   const linkLabel = '< Back'
 
   function signUp(e) {
@@ -19,11 +22,7 @@ export default function SignUp(props) {
     if (error) return;
 
     return authService.register(data.email, data.password)
-      .then(result => {
-        console.log('auth result', result)
-
-        return result;
-      })
+      .then(() => navigate('/login'))
       .catch(error => console.error(error));
   }
 
