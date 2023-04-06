@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import { loginUser } from '../../../redux/actions/authActions'
 
 const mapActionsToProps = dispatch => ({
@@ -37,6 +37,8 @@ class LoginForm extends Component {
         <div className="d-flex justify-content-center">
             <button onClick={e => this.login(e)} type="submit" className="btn btn-primary">Login</button>
         </div>
+
+        <a href="/sign-up">Sign up</a>
       </form>
     );
   }
