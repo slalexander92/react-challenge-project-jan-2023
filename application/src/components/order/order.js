@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Template } from '../../components';
 import { OrderForm } from '../../components';
-import { requestHandler } from '../../services/request-handler.service';
+import { ordersService } from '../../services/orders.service';
 import './order.css';
 
 import usePlaceOrder from '../../hooks/usePlaceOrder';
@@ -20,10 +20,12 @@ export default function Order(props) {
     const submitOrder = () => {
         if (orderItem === "") return;
 
-        requestHandler.makeRequest('POST', 'add-order', {
-            order_item: orderItem,
+        const orderedBy = auth && auth.email
+
+        ordersService.createOrder({
+            orderItem,
             quantity,
-            ordered_by: auth.email || 'Unknown!',
+            orderedBy,
         })
         .then(response => console.log('Success', JSON.stringify(response)))
         .catch(error => console.error(error));
