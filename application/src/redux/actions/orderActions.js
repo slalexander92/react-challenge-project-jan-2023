@@ -13,9 +13,9 @@ export const getOrders = () => {
     return requestHandler.makeRequest('GET', 'current-orders')
       .then(({ success, orders }) => {
         if (!success) {
-            console.log('Error getting orders');
+          console.log('Error getting orders');
 
-            return;
+          return Promise.reject('Error getting orders');
         }
 
         dispatch(setOrders(orders));
