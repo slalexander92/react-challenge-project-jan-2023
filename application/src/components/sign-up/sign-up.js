@@ -79,7 +79,7 @@ export default function SignUp(props) {
               className="button btn btn-primary"
               onClick={e => signUp(e)}
             >
-              Login
+              Sign Up
             </button>
         </div>
 
