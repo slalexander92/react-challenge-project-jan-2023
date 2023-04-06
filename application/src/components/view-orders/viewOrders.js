@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, connect } from 'react-redux';
-import { requestHandler } from '../../services/request-handler.service';
+import { ordersService } from '../../services/orders.service';
 import { getOrders } from '../../redux/actions/orderActions'
 
 import { OrderForm, Template } from '../../components';
@@ -68,11 +68,11 @@ function ViewOrders(props) {
     }
 
     const submitEditOrder = () => {
-        requestHandler.makeRequest('POST', 'edit-order', {
+        ordersService.editOrder({
             id: editingOrder._id,
-            order_item: orderItem,
+            orderItem,
             quantity,
-            ordered_by: auth.email || 'Unknown!',
+            orderedBy: auth && auth.email,
         })
         .then(() => {
             props.triggerGetOrders();
@@ -82,7 +82,7 @@ function ViewOrders(props) {
     }
 
     const deleteOrder = order => {
-        requestHandler.makeRequest('POST', 'delete-order', { id: order._id })
+        ordersService.deleteOrder(order._id)
             .then(() => {
                 props.triggerGetOrders();
             })
