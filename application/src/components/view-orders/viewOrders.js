@@ -83,7 +83,9 @@ function ViewOrders(props) {
 
     const deleteOrder = order => {
         requestHandler.makeRequest('POST', 'delete-order', { id: order._id })
-            .then(response => console.log("Success", JSON.stringify(response)))
+            .then(() => {
+                props.triggerGetOrders();
+            })
             .catch(error => console.error(error));
     }
 
