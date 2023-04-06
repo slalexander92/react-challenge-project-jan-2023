@@ -46,7 +46,7 @@ export default function SignUp(props) {
 
   return (
 
-    <div id="sign-in-form" className="form-wrapper">
+    <div id="sign-up-form" className="form-wrapper">
         <div className="form-group">
           <h1 className="title">SIGN UP!</h1>
         </div>
