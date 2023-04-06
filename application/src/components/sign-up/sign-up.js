@@ -45,7 +45,8 @@ export default function SignUp(props) {
   const displayError = error && (<div className="error">{error}</div>);
 
   return (
-    <div className="form-wrapper">
+
+    <div id="sign-in-form" className="form-wrapper">
         <div className="form-group">
           <h1 className="title">SIGN UP!</h1>
         </div>
