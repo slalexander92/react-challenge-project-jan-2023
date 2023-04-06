@@ -9,12 +9,9 @@ function register(email, password) {
     email,
     password,
   })
-  .then(({ success, data }) => {
-    if (!success) return Promise.reject('Register Failed');
+  .then(response => {
+    if (!response || !response.success) return Promise.reject(response.error);
 
-    return data;
-  })
-  .catch(error => {
-    console.log(error);
+    return response.data;
   })
 }
