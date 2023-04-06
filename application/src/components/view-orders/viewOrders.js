@@ -74,7 +74,10 @@ function ViewOrders(props) {
             quantity,
             ordered_by: auth.email || 'Unknown!',
         })
-        .then(response => console.log("Success", JSON.stringify(response)))
+        .then(() => {
+            props.triggerGetOrders();
+            toggleModal();
+        })
         .catch(error => console.error(error));
     }
 
