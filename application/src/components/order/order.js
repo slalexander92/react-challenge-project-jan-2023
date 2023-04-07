@@ -9,6 +9,7 @@ import usePlaceOrder from '../../hooks/usePlaceOrder';
 
 export default function Order(props) {
     const {
+        menuOptions,
         menuItemChosen,
         menuQuantityChosen,
         orderItem,
@@ -35,6 +36,7 @@ export default function Order(props) {
         <Template>
             <div className="form-wrapper">
               <OrderForm
+                menuOptions={menuOptions}
                 orderItem={orderItem}
                 quantity={quantity}
                 submitOrder={submitOrder}

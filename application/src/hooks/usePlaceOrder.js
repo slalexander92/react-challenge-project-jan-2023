@@ -16,6 +16,8 @@ const usePlaceOrder = action => {
   const menuQuantityChosen = ({ target }) => setQuantity(target.value);
 
   return {
+    menuOptions,
+
     editingOrder,
     setEditingOrder,
 
