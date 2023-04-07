@@ -8,9 +8,11 @@ const router = express.Router();
 // login expects email/password
 // successful login returns email and a fake token (if we ever want to use it)
 router.post('/login', (req, res) => {
+  const genericErrorMessage = 'Bad register information, try again';
+
   try {
     if (!req.body || !req.body.email || !req.body.password) {
-      res.status(401).json({ success: false, error: 'Bad login information, try again' });
+      res.status(401).json({ success: false, error: genericErrorMessage });
       return;
     }
 
@@ -30,7 +32,7 @@ router.post('/login', (req, res) => {
         });
       })
       .catch(() => {
-        res.status(401).json({ success: false, error: 'Bad login information, try again' });
+        res.status(401).json({ success: false, error: genericErrorMessage });
       });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Unknown error, try again' });
