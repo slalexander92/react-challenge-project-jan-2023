@@ -57,7 +57,7 @@ router.post('/register', (req, res) => {
         return userService.create(email, password)
           .then(data => res.status(200).json({ success: true, data }));
       })
-      .catch(error => {
+      .catch(() => {
         res.status(401).json({ success: false, error: genericErrorMessage });
       })
   } catch(error) {
