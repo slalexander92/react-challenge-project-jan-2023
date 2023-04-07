@@ -1,7 +1,14 @@
 import { useState } from 'react';
 
 const usePlaceOrder = action => {
-  const [orderItem, setOrderItem] = useState('');
+  const menuOptions = [
+    'Soup of the Day',
+    'Linguini With White Wine Sauce',
+    'Eggplant and Mushroom Panini',
+    'Chili Con Carne',
+  ];
+
+  const [orderItem, setOrderItem] = useState(menuOptions[0]);
   const [quantity, setQuantity] = useState('1');
   const [editingOrder, setEditingOrder] = useState(null);
 
