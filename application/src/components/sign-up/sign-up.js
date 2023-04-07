@@ -22,7 +22,15 @@ export default function SignUp(props) {
 
     return authService.register(data.email, data.password)
       .then(() => navigate('/login'))
-      .catch(error => console.error(error));
+      .catch(error => {
+        const errorMessage = error.message || error;
+
+        setError(errorMessage);
+
+        setTimeout(() => {
+          setError(null);
+        }, 2000);
+      });
   }
 
   function onChange(key, val) {
