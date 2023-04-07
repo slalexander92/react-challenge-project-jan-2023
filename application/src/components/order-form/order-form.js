@@ -3,7 +3,7 @@ import './orderForm.css';
 
 export default function OrderForm(props) {
     const MenuOptions = () => {
-        const foodOptions = props.menuOptions.map((name, index) => {
+        const foodOptions = (props.menuOptions || []).map((name, index) => {
             return (<option value={name} key={`menu-option-${index}`}>{name}</option>);
         });
 
