@@ -52,13 +52,13 @@ router.post('/register', (req, res) => {
     return User.findOne({ email })
       .then(user => {
         // don't allow multiple users with same email
-        if (user && user._id) return Promise.reject(genericErrorMessage);
+        if (user && user._id) return Promise.reject();
 
         return userService.create(email, password)
           .then(data => res.status(200).json({ success: true, data }));
       })
       .catch(error => {
-        res.status(401).json({ success: false, error });
+        res.status(401).json({ success: false, error: genericErrorMessage });
       })
   } catch(error) {
     res.status(500).json({ success: false, error });
