@@ -4,14 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import './sign-up.css';
 
 export default function SignUp(props) {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
 
   const linkLabel = '< Back'
 
