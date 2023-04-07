@@ -9,7 +9,7 @@ const userService = {
 };
 
 function create(email, password) {
-  const passwordHash = passwordService.createHash(password)
+  const passwordHash = passwordService.createHash(password);
 
   const userRecord = new User({
     email,
