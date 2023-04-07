@@ -1,0 +1,35 @@
+#sign-up-form.form-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-100%, -100%);
+  padding: 32px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  width: 350px;
+
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group, .button, .link {
+  margin-bottom: 16px;
+}
+
+.button {
+  width: 100%;
+}
+
+.title, .link {
+  text-align: center;
+}
+
+.error {
+  color: red;
+  background-color: #ffdfd5;
+  border-radius: 4px;
+  padding: 12px;
+}

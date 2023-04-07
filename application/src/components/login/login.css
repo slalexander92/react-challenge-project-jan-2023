@@ -1,0 +1,12 @@
+.sign-up-link {
+  display: block;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.error-message {
+  color: red;
+  background-color: #ffdfd5;
+  border-radius: 4px;
+  padding: 12px;
+}
