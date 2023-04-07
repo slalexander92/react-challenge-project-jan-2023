@@ -39,16 +39,25 @@ router.post('/login', (req, res) => {
 
 router.post('/register', (req, res) => {
   const { email, password } = req.body;
+  const genericErrorMessage = 'Bad register information';
 
   try {
     if (!req.body || !req.body.email || !req.body.password) {
-      res.status(401).json({ success: false, error: 'Bad register information' });
+      res.status(401).json({ success: false, error: genericErrorMessage });
       return;
     }
 
-    return userService.create(email, password)
-      .then(data => res.status(200).json({ success: true, data }));
+    return User.findOne({ email })
+      .then(user => {
+        // don't allow multiple users with same email
+        if (user && user._id) return Promise.reject(genericErrorMessage);
 
+        return userService.create(email, password)
+          .then(data => res.status(200).json({ success: true, data }));
+      })
+      .catch(error => {
+        res.status(401).json({ success: false, error });
+      })
   } catch(error) {
     res.status(500).json({ success: false, error });
   }
