@@ -5,7 +5,7 @@ export const authService = {
 }
 
 function register(email, password) {
-  return requestHandler.makeRequest('POST', 'sign-up', {
+  return requestHandler.makeRequest('POST', 'register', {
     email,
     password,
   })
