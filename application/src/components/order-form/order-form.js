@@ -2,15 +2,8 @@ import React from 'react';
 import './orderForm.css';
 
 export default function OrderForm(props) {
-    const FOOD_OPTIONS = [
-        'Soup of the Day',
-        'Linguini With White Wine Sauce',
-        'Eggplant and Mushroom Panini',
-        'Chili Con Carne',
-    ];
-
     const MenuOptions = () => {
-        const foodOptions = FOOD_OPTIONS.map((name, index) => {
+        const foodOptions = (props.menuOptions || []).map((name, index) => {
             return (<option value={name} key={`menu-option-${index}`}>{name}</option>);
         });
 

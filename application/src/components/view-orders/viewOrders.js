@@ -22,6 +22,8 @@ function ViewOrders(props) {
     const orders = useSelector(({ orders }) => orders.orderList);
 
     const {
+        menuOptions,
+
         menuItemChosen,
         menuQuantityChosen,
 
@@ -100,6 +102,7 @@ function ViewOrders(props) {
 
             <Modal isModalOpen={isModalOpen} closeModal={() => toggleModal()}>
                 <OrderForm
+                    menuOptions={menuOptions}
                     orderItem={orderItem}
                     quantity={quantity}
                     submitOrder={submitEditOrder}
